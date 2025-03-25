@@ -3,86 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Odontogram</title>
+    <title>Pengkajian Gigi & Mulut</title>
     <link rel="stylesheet" href="styles.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-        }
-        .odontogram-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 40px;
-            margin: 20px 0;
-            padding: 30px;
-            background: yellowgreen;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-        .odontogram-row {
-            display: grid;
-            gap: 5px;
-            justify-content: center;
-        }
-        .row-1, .row-4 {
-            grid-template-columns: repeat(16, 1fr);
-        }
-        .row-2, .row-3 {
-            grid-template-columns: repeat(10, 1fr);
-        }
-        .tooth {
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid black;
-            position: relative;
-            cursor: pointer;
-            background-color: white;
-            transition: transform 0.2s, background-color 0.2s;
-        }
-        .tooth:hover {
-            transform: scale(1.1);
-            background-color: #f0f0f0;
-        }
-        .tooth.selected {
-            background-color: black;
-            color: blue;
-        }
-        .tooth span {
-            position: absolute;
-            top: -20px;
-            font-size: 14px;
-            font-weight: bold;
-            white-space: nowrap;
-        }
-        table {
-            width: 80%;
-            margin: 20px auto;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 10px;
-            text-align: center;
-        }
-        button {
-            background-color: red;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            cursor: pointer;
-        }
-
-        button:hover {
-            background-color: darkred;
-        }
-    </style>
 </head>
 <body>
     <h2>Odontogram</h2>
@@ -93,7 +15,6 @@
     <select id="patientType">
         <option value="anak">Anak</option>
         <option value="dewasa">Dewasa</option>
-        <option value="lansia">Lansia</option>
     </select>
 
     <table id="toothTable">
@@ -107,69 +28,97 @@
         </thead>
         <tbody></tbody>
     </table>
+
+    <form id="dentalForm">
+        <h2>Pemeriksaan Fisik Gigi & Mulut</h2>
+        <h3>Occlusi</h3>
+        <div class="form-group">
+            <label>Jenis Occlusi:</label>
+            <div class="input-group">
+                <label><input type="radio" name="occlusion" value="normal" checked> Normal Bite</label>
+                <label><input type="radio" name="occlusion" value="cross"> Cross Bite</label>
+                <label><input type="radio" name="occlusion" value="steep"> Steep Bite</label>
+            </div>
+        </div>
     
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const teethRows = [
-                { className: "row-1", teeth: [18, 17, 16, 15, 14, 13, 12, 11, 21, 22, 23, 24, 25, 26, 27, 28] },
-                { className: "row-2", teeth: [55, 54, 53, 52, 51, 61, 62, 63, 64, 65] },
-                { className: "row-3", teeth: [85, 84, 83, 82, 81, 71, 72, 73, 74, 75] },
-                { className: "row-4", teeth: [48, 47, 46, 45, 44, 43, 42, 41, 31, 32, 33, 34, 35, 36, 37, 38] }
-            ];
-            const odontogramContainer = document.getElementById("odontogram");
-
-            teethRows.forEach(row => {
-                let rowDiv = document.createElement("div");
-                rowDiv.classList.add("odontogram-row", row.className);
-
-                row.teeth.forEach(num => {
-                    let tooth = document.createElement("div");
-                    tooth.classList.add("tooth");
-                    tooth.dataset.number = num;
-                    tooth.innerHTML = `<span>${num}</span>`;
-                    tooth.addEventListener("click", function() {
-                        addToTable(num, tooth);
-                    });
-                    rowDiv.appendChild(tooth);
-                });
-
-                odontogramContainer.appendChild(rowDiv);
-            });
-        });
-        
-        function addToTable(num, toothElement) {
-            let table = document.querySelector("#toothTable tbody");
-            if ([...table.rows].some(row => row.cells[0].textContent == num)) return;
-            
-            let row = table.insertRow();
-            row.insertCell(0).textContent = "KG" + num;
-            
-            let statusCell = row.insertCell(1);
-            let select = document.createElement("select");
-            ["Tambalan Amalgram", "Tambalan Composit", "GIC", "Karies"].forEach(option => {
-                let opt = document.createElement("option");
-                opt.value = option;
-                opt.textContent = option;
-                select.appendChild(opt);
-            });
-            statusCell.appendChild(select);
-            
-            let keteranganCell = row.insertCell(2);
-            let input = document.createElement("input");
-            input.type = "text";
-            keteranganCell.appendChild(input);
-            
-            let actionCell = row.insertCell(3);
-            let deleteBtn = document.createElement("button");
-            deleteBtn.textContent = "Hapus";
-            deleteBtn.addEventListener("click", function() {
-                row.remove();
-                toothElement.classList.remove("selected");
-            });
-            actionCell.appendChild(deleteBtn);
-            
-            toothElement.classList.add("selected");
-        }
-    </script>
+        <h3>Torus Palatinus</h3>
+        <div class="form-group">
+            <label>Ukuran:</label>
+            <div class="input-group">
+                <label><input type="radio" name="torus_palatinus" value="tidak_ada" checked> Tidak Ada</label>
+                <label><input type="radio" name="torus_palatinus" value="kecil"> Kecil</label>
+                <label><input type="radio" name="torus_palatinus" value="sedang"> Sedang</label>
+                <label><input type="radio" name="torus_palatinus" value="besar"> Besar</label>
+                <label><input type="radio" name="torus_palatinus" value="multiple"> Multiple</label>
+            </div>
+        </div>
+    
+        <h3>Torus Mandibularis</h3>
+        <div class="form-group">
+            <label>Posisi:</label>
+            <div class="input-group">
+                <label><input type="radio" name="torus_mandibularis" value="tidak_ada" checked> Tidak Ada</label>
+                <label><input type="radio" name="torus_mandibularis" value="sisi_kiri"> Sisi Kiri</label>
+                <label><input type="radio" name="torus_mandibularis" value="sisi_kanan"> Sisi Kanan</label>
+                <label><input type="radio" name="torus_mandibularis" value="kedua_sisi"> Kedua Sisi</label>
+            </div>
+        </div>
+    
+        <h3>Diastema</h3>
+        <div class="form-group">
+            <label>Status:</label>
+            <div class="input-group">
+                <label><input type="radio" name="diastema" value="tidak_ada" checked> Tidak Ada</label>
+                <label><input type="radio" name="diastema" value="ada"> Ada</label>
+            </div>
+        </div>
+        <textarea placeholder="Dimana dan Berapa Lebarnya"></textarea>
+    
+        <h3>Gigi Anomali</h3>
+        <div class="form-group">
+            <label>Status:</label>
+            <div class="input-group">
+                <label><input type="radio" name="gigi_anomali" value="tidak_ada" checked> Tidak Ada</label>
+                <label><input type="radio" name="gigi_anomali" value="ada"> Ada</label>
+            </div>
+        </div>
+        <textarea placeholder="Jelaskan Gigi Yang Mana dan Bentuknya"></textarea>
+    
+        <h3>Lain-lain</h3>
+        <textarea placeholder="Tambahkan informasi lain yang dibutuhkan"></textarea>
+    
+        <h3>Jumlah Foto</h3>
+        <div class="form-group">
+            <label>Foto Digital:</label>
+            <input type="number" min="0">
+        </div>
+        <div class="form-group">
+            <label>Foto Intra Oral:</label>
+            <input type="number" min="0">
+        </div>
+    
+        <h3>Jumlah Rontgen</h3>
+        <div class="form-group">
+            <label>Dental:</label>
+            <input type="number" min="0">
+        </div>
+        <div class="form-group">
+            <label>PA:</label>
+            <input type="number" min="0">
+        </div>
+        <div class="form-group">
+            <label>OPG:</label>
+            <input type="number" min="0">
+        </div>
+        <div class="form-group">
+            <label>Ceph:</label>
+            <input type="number" min="0">
+        </div>
+    
+        <button type="submit">Simpan</button>
+    </form>    
+    
+    
+    <script src="script.js"></script>
 </body>
 </html>
